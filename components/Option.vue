@@ -1,25 +1,35 @@
-<div class="option-container">
-    <h4>1) Choose a gender</h4>
+<script setup lang="ts">
+import { Gender, Popularity, Length } from "~~/data";
+
+interface OptionProps {
+  option: {
+    title: string;
+    categorie: string;
+    buttons: Gender[] | Popularity[] | Length[];
+  };
+  options: {
+    gender: Gender;
+    popularity: Popularity;
+    length: Length;
+  };
+}
+
+const props = defineProps<OptionProps>();
+</script>
+
+<template>
+  <div class="option-container">
+    <h4>{{ option.title }}</h4>
     <div class="option-buttons">
       <button
-        :class="options.gender === Gender.BOY && 'option-active'"
+        v-for="value in option.buttons"
+        :key="value"
+        :class="options[option.categorie] === value && 'option-active'"
         class="option option-left"
-        @click="options.gender = Gender.BOY"
+        @click="options[option.categorie] = value"
       >
-        Boy
-      </button>
-      <button
-        class="option"
-        :class="options.gender === Gender.UNISEX && 'option-active'"
-        @click="options.gender = Gender.UNISEX"
-      >
-        Unisex
-      </button>
-      <button
-        :class="options.gender === Gender.GIRL && 'option-active'"
-        class="option option-right"
-        @click="options.gender = Gender.GIRL"
-      >
-        Girl
+        {{ value }}
       </button>
     </div>
+  </div>
+</template>
